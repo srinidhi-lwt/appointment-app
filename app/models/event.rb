@@ -37,6 +37,11 @@ class Event < ApplicationRecord
         x[day.to_s] = day_openings - (day_openings & day_appointments)
       end
     end
+    CollectionSerializer.new(serializer, date_events_map).call
+  end
+
+  def self.serializer
+    EventSerializer
   end
 
   private
