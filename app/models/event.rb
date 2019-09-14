@@ -26,6 +26,17 @@ class Event < ApplicationRecord
 
     openings = by_date(latest_opening_dates)
                 .group_by(&:day_of_week)
+
+    date_events_map = {}.tap do |x|
+      (given_date...upto_seven_days.to_date).each do |day|
+        day_name = day_name_for(day)
+
+        day_openings = time_slots_for(openings[day_name])
+        day_appointments = time_slots_for(appointments[day_name])
+
+        x[day.to_s] = day_openings - (day_openings & day_appointments)
+      end
+    end
   end
 
   private
