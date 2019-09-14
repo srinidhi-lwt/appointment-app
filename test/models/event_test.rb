@@ -17,4 +17,39 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 7, availabilities.length
   end
 
+  test "with multiple openings (morning and post Lunch) on same day" do
+
+    Event.create kind: 'opening', starts_at: DateTime.parse("2019-08-23 09:30"), ends_at: DateTime.parse("2019-08-23 13:00"), weekly_recurring: true
+    Event.create kind: 'opening', starts_at: DateTime.parse("2019-08-23 14:00"), ends_at: DateTime.parse("2019-08-23 17:00"), weekly_recurring: true
+
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-08-30 10:30"), ends_at: DateTime.parse("2019-08-30 11:30")
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-08-30 14:30"), ends_at: DateTime.parse("2019-08-30 15:30")
+
+    availabilities = Event.availabilities DateTime.parse("2019-08-25")
+
+    assert_equal '2019/08/25', availabilities[0][:date]
+    assert_equal [], availabilities[0][:slots]
+
+    assert_equal '2019/08/26', availabilities[1][:date]
+    assert_equal [], availabilities[1][:slots]
+
+    assert_equal '2019/08/27', availabilities[2][:date]
+    assert_equal [], availabilities[2][:slots]
+
+    assert_equal '2019/08/28', availabilities[3][:date]
+    assert_equal [], availabilities[3][:slots]
+
+    assert_equal '2019/08/29', availabilities[4][:date]
+    assert_equal [], availabilities[4][:slots]
+
+    assert_equal '2019/08/30', availabilities[5][:date]
+    assert_equal ["9:30", "10:00", "11:30", "12:00", "12:30", "14:00", "15:30", "16:00", "16:30"],
+                  availabilities[5][:slots]
+
+    assert_equal '2019/08/31', availabilities[6][:date]
+    assert_equal [], availabilities[6][:slots]
+
+    assert_equal 7, availabilities.length
+  end
+
 end
