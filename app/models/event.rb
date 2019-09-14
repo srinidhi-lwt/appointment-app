@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+  include DateConcern
 
   before_save :set_day_of_week
 
