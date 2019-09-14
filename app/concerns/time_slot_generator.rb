@@ -15,7 +15,7 @@ module TimeSlotGenerator
     end
 
     def self.time_format(slot)
-      Time.at(slot).utc.strftime("%H:%M")
+      Time.at(slot).utc.strftime("%-H:%M")
     end
   end
 end
