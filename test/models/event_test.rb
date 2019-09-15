@@ -33,6 +33,36 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 7, availabilities.length
   end
 
+  test "recurring week openings for 4 weeks" do
+    Event.create kind: 'opening', starts_at: DateTime.parse("2015-08-04 09:30"), ends_at: DateTime.parse("2015-08-04 12:30"), weekly_recurring: true
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2015-09-01 10:30"), ends_at: DateTime.parse("2015-09-01 11:30")
+
+    availabilities = Event.availabilities DateTime.parse("2015-08-29")
+
+    assert_equal '2015/08/29', availabilities[0][:date]
+    assert_equal [], availabilities[0][:slots]
+
+    assert_equal '2015/08/30', availabilities[1][:date]
+    assert_equal [], availabilities[1][:slots]
+
+    assert_equal '2015/08/31', availabilities[2][:date]
+    assert_equal [], availabilities[2][:slots]
+
+    assert_equal '2015/09/01', availabilities[3][:date]
+    assert_equal ["9:30", "10:00", "11:30", "12:00"], availabilities[3][:slots]
+
+    assert_equal '2015/09/02', availabilities[4][:date]
+    assert_equal [], availabilities[4][:slots]
+
+    assert_equal '2015/09/03', availabilities[5][:date]
+    assert_equal [], availabilities[5][:slots]
+
+    assert_equal '2015/09/04', availabilities[6][:date]
+    assert_equal [], availabilities[6][:slots]
+
+    assert_equal 7, availabilities.length
+  end
+
   test "with multiple openings (morning and post Lunch) on same day" do
 
     Event.create kind: 'opening', starts_at: DateTime.parse("2019-08-23 09:30"), ends_at: DateTime.parse("2019-08-23 13:00"), weekly_recurring: true
