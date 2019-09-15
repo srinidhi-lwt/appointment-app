@@ -70,7 +70,7 @@ class EventTest < ActiveSupport::TestCase
 
   test "recurring week openings and appointments with year change" do
 
-    Event.create kind: 'opening', starts_at: DateTime.parse("2018-12-28 09:30"), ends_at: DateTime.parse("2018-12-28 12:30"), weekly_recurring: true
+    Event.create kind: 'opening', starts_at: DateTime.parse("2018-12-21 09:30"), ends_at: DateTime.parse("2018-12-21 12:30"), weekly_recurring: true
     Event.create kind: 'appointment', starts_at: DateTime.parse("2019-01-04 10:30"), ends_at: DateTime.parse("2019-01-04 11:30")
 
     availabilities = Event.availabilities DateTime.parse("2019-01-01")
