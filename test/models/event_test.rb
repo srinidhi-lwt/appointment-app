@@ -68,43 +68,6 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 7, availabilities.length
   end
 
-  test "new openings added on different days in upcoming seven days" do
-
-    Event.create kind: 'opening', starts_at: DateTime.parse("2019-09-17 09:30"), ends_at: DateTime.parse("2019-09-17 11:00"), weekly_recurring: true
-    Event.create kind: 'opening', starts_at: DateTime.parse("2019-09-18 09:30"), ends_at: DateTime.parse("2019-09-18 11:00"), weekly_recurring: true
-
-    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-17 09:30"), ends_at: DateTime.parse("2019-09-17 10:00")
-    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-17 10:30"), ends_at: DateTime.parse("2019-09-17 11:00")
-
-    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-18 09:30"), ends_at: DateTime.parse("2019-09-18 10:00")
-    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-18 10:30"), ends_at: DateTime.parse("2019-09-18 11:00")
-
-    availabilities = Event.availabilities DateTime.parse("2019-09-15")
-
-    assert_equal '2019/09/15', availabilities[0][:date]
-    assert_equal [], availabilities[0][:slots]
-
-    assert_equal '2019/09/16', availabilities[1][:date]
-    assert_equal [], availabilities[1][:slots]
-
-    assert_equal '2019/09/17', availabilities[2][:date]
-    assert_equal ['10:00'], availabilities[2][:slots]
-
-    assert_equal '2019/09/18', availabilities[3][:date]
-    assert_equal ['10:00'], availabilities[3][:slots]
-
-    assert_equal '2019/09/19', availabilities[4][:date]
-    assert_equal [], availabilities[4][:slots]
-
-    assert_equal '2019/09/20', availabilities[5][:date]
-    assert_equal [], availabilities[5][:slots]
-
-    assert_equal '2019/09/21', availabilities[6][:date]
-    assert_equal [], availabilities[6][:slots]
-
-  end
-
-
   test "recurring week openings and appointments with year change" do
 
     Event.create kind: 'opening', starts_at: DateTime.parse("2018-12-28 09:30"), ends_at: DateTime.parse("2018-12-28 12:30"), weekly_recurring: true
@@ -136,4 +99,40 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 7, availabilities.length
   end
 
+  test "new openings added on different days in upcoming seven days" do
+
+    Event.create kind: 'opening', starts_at: DateTime.parse("2019-09-17 09:30"), ends_at: DateTime.parse("2019-09-17 11:00"), weekly_recurring: true
+    Event.create kind: 'opening', starts_at: DateTime.parse("2019-09-18 09:30"), ends_at: DateTime.parse("2019-09-18 11:00"), weekly_recurring: true
+
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-17 09:30"), ends_at: DateTime.parse("2019-09-17 10:00")
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-17 10:30"), ends_at: DateTime.parse("2019-09-17 11:00")
+
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-18 09:30"), ends_at: DateTime.parse("2019-09-18 10:00")
+    Event.create kind: 'appointment', starts_at: DateTime.parse("2019-09-18 10:30"), ends_at: DateTime.parse("2019-09-18 11:00")
+
+    availabilities = Event.availabilities DateTime.parse("2019-09-15")
+
+    assert_equal '2019/09/15', availabilities[0][:date]
+    assert_equal [], availabilities[0][:slots]
+
+    assert_equal '2019/09/16', availabilities[1][:date]
+    assert_equal [], availabilities[1][:slots]
+
+    assert_equal '2019/09/17', availabilities[2][:date]
+    assert_equal ["10:00"], availabilities[2][:slots]
+
+    assert_equal '2019/09/18', availabilities[3][:date]
+    assert_equal ["10:00"], availabilities[3][:slots]
+
+    assert_equal '2019/09/19', availabilities[4][:date]
+    assert_equal [], availabilities[4][:slots]
+
+    assert_equal '2019/09/20', availabilities[5][:date]
+    assert_equal [], availabilities[5][:slots]
+
+    assert_equal '2019/09/21', availabilities[6][:date]
+    assert_equal [], availabilities[6][:slots]
+
+    assert_equal 7, availabilities.length
+  end
 end
