@@ -3,7 +3,7 @@ module DateConcern
 
   included do
     def self.day_name_for(date = Date.today)
-      date.strftime("%A").downcase
+      date.strftime('%A').downcase
     end
 
     def self.seven_days_from(date)
